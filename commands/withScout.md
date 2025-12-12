@@ -1,53 +1,69 @@
 ---
-description: "Handles a task by first assessing complexity, then routing to either Fast Execution or Deep Investigation."
-argument-hint: "[A goal or task]"
+description: "Handles complex tasks via Complexity Assessment, routing to Fast Execution or Deep Investigation with mandatory documentation sync."
+argument-hint: "[A complex goal or task]"
 ---
 
 # /withScout
 
-This command handles tasks by first performing a **Complexity Assessment** and then choosing the appropriate workflow: **Fast Execution** (for simple tasks) or **Deep Investigation** (for complex tasks).
+This command handles tasks by first performing a **Complexity Assessment**, then choosing the appropriate workflow, and finally ensuring the project documentation is updated.
 
 ## When to use
 
-- **Use when:** The user has a request that is not trivial (requires reading >1 file, understanding system logic, or making changes).
-- **Suggest when:** A user's request cannot be fulfilled without first gathering information.
+- **Use when:** The request is non-trivial (requires reading >1 file, understanding system logic, or making changes).
+- **Suggest when:** A single agent cannot safely complete the task without prior information gathering.
+- **Example (Complex):** "User: Add JWT token refresh functionality compliant with industry standards."
+- **Example (Simple):** "User: Fix the typo in the login button text."
 
-## Actions
+## Workflow
 
-This command follows an **Assess → Route → Action** workflow.
+This command follows an **Assess → Route → Action → Document** workflow.
 
-### **Step 1. Assess & Route **
+### Phase 1: Assess & Route
 
-1.  **Complexity Assessment (CRITICAL STEP):**
-    - **Goal:** Immediately determine the task's complexity **(Low, Medium, or High)**.
-    - **Decision:**
-        - **If Complexity is Low (Fast Track):** Proceed directly to **Step 3 (Fast Execution)**.
-        - **If Complexity is Medium or High (Deep Track):** Proceed to **Step 2 (Deep Investigation)**.
+1.  **Complexity Assessment (CRITICAL):**
+    * **Goal:** Immediately determine task complexity **(Low, Medium, or High)** based on the request.
+    * **Decision:**
+        * **If Low (Fast Track):** Proceed directly to **Phase 3 (Fast Execution)**.
+        * **If Medium/High (Deep Track):** Proceed to **Phase 2 (Deep Investigation)**.
 
-### **Step 2. Deep Investigation - For Medium/High Complexity **
+### Phase 2: Deep Investigation (For Medium/High Complexity)
 
-1.  **Deconstruct & Plan:**
-    - Assign questions to `investigator` or `scout` agents.
+1.  **Deconstruct & Plan (MANDATORY SPLIT):**
+    * **NO SINGLE THREAD:** You MUST NOT assign all work to a single investigator.
+    * **Split Strategy:** You must split the investigation into at least two distinct dimensions:
+        * **Dimension A (Internal):** Project structure, existing logic, file relationships.
+        * **Dimension B (External/Concept):** Third-party library usage, official docs, industry best practices for the feature, security patterns.
+    * *Example:* "Investigator 1: Map current Auth flow." + "Investigator 2: Search web for best practices on JWT rotation."
+
 2.  **Parallel Investigation:**
-    - Launch agents. **CRITICAL:** Each agent MUST return a report including a structured `<ExecutionPlan>` tag.
+    * Use the `Task` tool to launch `investigator` agents for Dimension A and Dimension B **simultaneously**.
+    * **Constraint:** Each investigator's report **MUST** include the structured `<ExecutionPlan>` tag.
+
 3.  **Synthesize & Evaluate:**
-    - Merge reports into a master plan.
-4.  **Execute:**
-    - Proceed to **Step 4 (Deep Execution)**.
+    * Merge reports from all investigators.
+    * Combine "External Best Practices" with "Internal Code Reality" to form the final plan.
 
-### **Step 3. Fast Execution - For Low Complexity **
+4.  **Iterate or Execute:**
+    * **Insufficient Info:** Formulate new questions and repeat Step 2.
+    * **Sufficient Info:** Proceed to **Phase 3 (Deep Execution)**.
 
-1.  **Action Phase (Quick Plan):**
-    - The `worker` agent creates a brief plan and executes it directly.
-    - **Verification:** The worker **MUST** perform a validation check (e.g., `npm run lint`, syntax check) after the change.
-    - Skip Step 4.
+### Phase 3: Execution (Adaptive)
 
-### **Step 4. Deep Execution - For Medium/High Complexity **
+* **Scenario A: Fast Execution (Low Complexity)**
+    * The `worker` agent executes the task based on a brief self-generated plan.
+    * **Validation:** Worker MUST run basic checks (lint/syntax) after modification.
 
-1.  **Action Phase (Execute Deep Plan):**
-    - Based on the structured `<ExecutionPlan>` from Step 2, use `worker` agents to execute the request.
-    - **Verification:** The worker **MUST** perform a validation check (e.g., `npm test`, build check) after the change.
+* **Scenario B: Deep Execution (Medium/High Complexity)**
+    * The `worker` agent executes the task based on the comprehensive `<ExecutionPlan>` from Phase 2.
+    * **Validation:** Worker MUST run verification (tests/types) after modification.
 
-### **Step 5. Final Report **
+### Phase 4: Documentation & Closure (MANDATORY)
 
-1.  **Summarize:** State the complexity assessment, findings, actions taken, and verification results.
+1.  **Synthesize to `/llmdoc`:**
+    * Review the **changes made** in Phase 3 and the **findings** in `.scout-reports`.
+    * **Decision:** Does this task introduce new concepts, change APIs, or update architecture?
+        * **Yes:** You MUST update the relevant files in `/llmdoc` (or create new ones). **Extract** the permanent value from the temporary `.scout-reports` and consolidate it into the permanent documentation.
+        * **No:** Explicitly state "No architectural documentation update required."
+
+2.  **Final Report:**
+    * Deliver the result, summarizing the complexity, investigation insights, actions taken, and **documentation updates**.
