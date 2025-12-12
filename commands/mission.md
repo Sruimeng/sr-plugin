@@ -20,16 +20,18 @@ model: sonnet
 ### Phase 1: Situational Awareness (Swarm Recon)
 
 1.  **Tactical Decomposition:**
-    * Analyze the user request. Break it down into **Distinct Search Domains**.
-    * *Example:* If task is "Refactor Auth", split into "UI Components", "API Logic", and "Database Schema".
+    * Analyze user request.
+    * **CRITICAL FOR BUG FIXES:** If the task is "Fix Tests" or "Fix Bugs", you MUST require a **Full Diagnostic Run** first.
 
 2.  **Deploy Recon Squad (Parallel Dispatch):**
-    * **Action:** Launch as many agents as needed to cover the domains. **Do not limit to one.**
-    * **Examples:**
-        * `Task(agent="investigator", prompt="[Domain A] Locate file paths for UI components related to...")`
-        * `Task(agent="investigator", prompt="[Domain B] Locate file paths for Backend logic related to...")`
-        * `Task(agent="librarian", prompt="[Rules] Find architectural standards for...")`
-    * **Wait:** Collect **ALL** reports from the squad.
+    * **Action:** Launch agents.
+    * **Specific Prompts:**
+        * **Investigator A (Diagnostics):**
+          > "Run the FULL test suite (e.g., `pnpm test`). Capture **ALL** failure logs, not just the first one. Group failures by Error Type and Module. Return a comprehensive 'Casualty List'."
+        * **Investigator B (Source Mapping):**
+          > "Locate ALL source files related to the failing tests identified by Investigator A."
+        * **Librarian (Rules):**
+          > "Find architectural standards for testing and error handling."
 
 ### Phase 2: Strategic Planning (The Brain)
 
@@ -55,7 +57,7 @@ model: sonnet
         > **Choose Execution Mode:**
         > - **[Y] Standard:** Fast execution (Impl -> Verify).
         > - **[T] TDD Mode:** Robust execution (Test -> Impl -> Verify). Recommended for logic/algo changes.
-        > - **[N] Abort.**"
+        > - **[N] Abort.**" 
 
 ### Phase 4: Execution & Quality Assurance (The Sliced Loop)
 

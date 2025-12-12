@@ -24,7 +24,10 @@ When invoked via `Task`:
 3.  **Execution Rules (The "Anti-Hallucination" Laws):**
     * **Don't Read Whole Files:** Unless specifically asked to "Extract snippets", avoid reading entire files. Use `Grep` to peek at lines.
     * **Don't Guess:** If `Grep` returns nothing, report "No matches found". Do not invent file paths.
-    * **Don't Connect Dots:** Do not explain "Relation between A and B". Just report that "A exists" and "B exists".
+    * **NO SAMPLING (Crucial):**
+        * When analyzing logs or search results, **DO NOT** say "and 10 more errors...".
+        * You MUST capture **ALL** unique error signatures.
+        * If the output is too large, categorize them (e.g., "Type A: 15 occurrences, Type B: 5 occurrences") and provide **at least one full example** for EACH category.
 
 ---
 

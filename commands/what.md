@@ -29,20 +29,16 @@ model: sonnet
 
 * **⚔️ Battle Mode (`/campaign`)**
     * *Profile:* **Composite & Multi-step.**
-    * *Signs:*
-        * Explicit lists: "1. Fix bug, 2. Add test".
-        * Conjunctions: "Fix X **AND** then create Y".
-        * Plurals: "Update **all** demos", "Create **5** files".
-        * Disjoint tasks: "Clean TODOs" + "Fix Logic" (Unrelated goals).
-    * *Action:* Route to `/campaign`.
+    * *The "AND" Rule:* If the request contains "AND", "THEN", "ALSO", or numbered lists (1., 2.), it is likely a Campaign.
+    * *The "Mixed" Rule:* If the request mixes different types of work (e.g., "Fix logic" [Hard] + "Clean comments" [Easy]), use Campaign to split them.
+    * *Example:* "Fix the math bug **AND** write tests for it." -> **`/campaign`**
+    * *Example:* "1. Fix login. 2. Update style." -> **`/campaign`**
 
 * **🛡️ Deep Track (`/mission`)**
     * *Profile:* **Deep & Cohesive.**
-    * *Signs:*
-        * "Refactor [Module]". (Requires deep context of one area).
-        * "Investigate why [Error] happens". (Unknown cause).
-        * "Implement [Feature]". (Requires logic + database + UI, but tightly coupled).
-    * *Action:* Route to `/mission`.
+    * *Constraint:* Use this ONLY when the tasks are tightly coupled and CANNOT be separated.
+    * *Example:* "Refactor the class hierarchy to support polymorphism." (Cannot split this).
+    * *Example:* "Debug why the physics engine explodes at high velocity." (Unknown root cause).
 
 * **🏥 Health Mode (`/audit`)**
     * *Profile:* **Passive Scan.**
