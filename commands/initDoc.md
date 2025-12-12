@@ -11,21 +11,22 @@ model: sonnet
 
 ## Standard Operating Procedure
 
-### Phase 1: Discovery (The Scout)
+### Phase 1: Reconnaissance (The Scout)
 
 1.  **Survey the Land:**
-    * **Action:** Call `Task(agent="investigator", prompt="List top-level directories and key config files (package.json, etc).")`.
-    * **Synthesize:** Identify the "Core Modules" (e.g., `Auth`, `Database`, `API`).
+    * **Action:** Call `Task(agent="investigator", prompt="List top-level directories and key config files (package.json, etc). Return a tree structure.")`.
+    * **Synthesize:** Analyze the tree. Identify the "Core Modules" (e.g., `src/auth`, `src/api`).
+    * *Self-Correction:* If the structure is standard (e.g., Next.js, NestJS), proceed immediately. Only ask user if the structure is chaotic.
 
-### Phase 2: Mapping (The Cartographer)
+### Phase 2: Foundation (The Cartographer)
 
-1.  **Establish Foundation:**
+1.  **Map the Tech Stack:**
     * **Action:** Call `Task(agent="cartographer", prompt="Read package.json and config files. Research key dependencies. Create /llmdoc/reference/tech-stack.md explaining WHY we use these libs.")`.
-    * *Note:* This ensures the map starts with a clear understanding of the tools.
-    
-2.  **Map Core Modules (Iterative):**
-    * **For each Core Module found in Phase 1:**
-        * **Action:** Call `Task(agent="cartographer", prompt="Scan [Module Path]. Create /llmdoc/architecture/[module-name].md with Critical Paths.")`.
+    * *Critical:* Wait for this file. It informs the language used in subsequent docs.
+
+2.  **Map Core Modules (The Loop):**
+    * **Loop:** For every identified Core Module:
+        * **Action:** Call `Task(agent="cartographer", prompt="Scan [Module Path]. Create /llmdoc/architecture/[module-name].md. Focus on: Responsibility and Critical Paths.")`.
 
 ### Phase 3: Final Linkage (The Index)
 

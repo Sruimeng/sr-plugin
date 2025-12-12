@@ -37,14 +37,24 @@ model: sonnet
 
 1.  **Seek Approval:**
     * **Action:** Read the `strategy-[topic].md` file created by Scout.
-    * **Ask:** Use `AskUserQuestion`: "Strategy ready at [Path]. Summary: [Brief]. Proceed? (Y/N)"
+    * **Present Options:** Use `AskUserQuestion` to present the plan with execution modes:
+        > "Commander reporting. Strategy ready at [Path].
+        > **Summary:** [Brief recap]
+        >
+        > **Choose Execution Mode:**
+        > - **[Y] Standard:** Fast execution (Impl -> Verify).
+        > - **[T] TDD Mode:** Robust execution (Test -> Impl -> Verify). Recommended for logic/algo changes.
+        > - **[N] Abort.**"
 
-### Phase 4: Execution & Quality Assurance (The Repair Loop)
+### Phase 4: Execution & Review
 
-1.  **Initial Strike:**
-    * **Action:** `Task(agent="worker", prompt="Execute plan in strategy file: [Path]. Verify results.")`
+1.  **Dispatch Vanguard:**
+    * **Analyze User Response:**
+        * If user said "Y" or "Standard" -> Set `TDD_FLAG` = ""
+        * If user said "T" or "TDD" -> Set `TDD_FLAG` = "**[ENABLE_TDD_PROTOCOL]**"
+    * **Action:** `Task(agent="worker", prompt="Execute plan in strategy file: [Path]. " + TDD_FLAG)`
 
-2.  **The Quality Loop:**
+2.  **Dispatch MP (Quality Gate):**
     * **Constraint:** You must ensure quality before proceeding.
     * **Action:** Call `Task(agent="critic", prompt="Review changes made by Worker.")`.
     * **Decision Logic:**
