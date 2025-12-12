@@ -1,56 +1,65 @@
 ---
-description: "Smartly analyzes changes, performs code sanity checks, and generates context-aware conventional commit messages."
+description: "Smart Commit Gateway. Analyzes changes via Critic, aligns with Strategy, and generates Conventional Commits."
 argument-hint: ""
+model: haiku
 ---
 
 # /commit
 
-This command acts as a **Smart Commit Gateway**. It analyzes staged/unstaged changes, checks for leftover debug code, understands the task context, and generates a standardized commit message.
+> **SYSTEM OVERRIDE:** You are **Gatekeeper**.
+> **Goal:** Ensure no trash enters the repo. Write history, not just logs.
 
-## When to use
+## SOP
 
-- **Use when:** The user is ready to save their work.
-- **Suggest when:** A `worker` has completed a task successfully, or the user says "done", "save", or "wrap up".
+### Phase 1: The Inspection (Critic)
 
-## Actions
+1.  **Gather Status:**
+    * Run `git status` and `git diff --staged`.
+    * *If nothing staged:* Ask user: "Nothing staged. Stage all changes? (Y/N)" -> If Y, `git add .`.
 
-This command follows a **Gather → Check → Draft → Confirm** workflow.
+2.  **Security Check (Dispatch MP):**
+    * **Action:** Call `Task(agent="critic", prompt="Scan the STAGED diffs. Check for: 1. Console logs/Debuggers. 2. Secrets. 3. Conflict markers. Return PASS or FAIL.")`.
+    * **Logic:**
+        * **If FAIL:** Warn user: "⚠️ Critic found issues: [Issues]. Proceed anyway? (Y/N)"
+        * **If PASS:** Proceed to Phase 2.
 
-### **Step 1. Gather Context & Diff **
+### Phase 2: The Context (Strategy)
 
-1.  **Git Status:** Run `git status`, `git diff --staged`, and `git log -n 5` (to learn style).
-2.  **Task Context:**
-    * Check for a recent context file (e.g., `.claude/context.md` or `llmdoc/agent/*.md`).
-    * *Goal:* Understand the **Business Intent** (Why) behind the changes, not just the code syntax (What).
+1.  **Understand Intent:**
+    * **Action:** Look for the most recent `llmdoc/agent/strategy-[topic].md`.
+    * **Reasoning:** Use the strategy's `<Assessment>` and `<ExecutionPlan>` to understand *WHY* this change exists.
+    * *Fallback:* If no strategy found, infer from `git diff`.
 
-### **Step 2. Sanity Check (Code Hygiene) **
+### Phase 3: The Draft (Conventional Commit)
 
-1.  **Scan for Debris:** Analyze the diffs for common mistakes:
-    * Leftover `console.log`, `print()`, or debugging statements.
-    * New `TODO` or `FIXME` comments.
-    * Conflict markers (`<<<<<<<`).
-2.  **Report Issues:** If any issues are found, **warn the user immediately** before proposing the message.
+1.  **Draft Message:**
+    * **Format:**
+      ```text
+      <type>(<scope>): <subject>
 
-### **Step 3. Draft Commit Message **
+      <body> (Optional: Link to strategy or explain 'Why')
+      ```
+    * **Rules:**
+      * Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
+      * Subject: Imperative, lowercase, no period (e.g., "add auth guard", not "Added auth guard.").
+      * Body: Mention the Strategy ID if available.
 
-Generate a commit message following the **Conventional Commits** standard:
-> `<type>(<scope>): <subject>`
->
-> `<body>` (Optional, for complex changes)
+### Phase 4: Execution
 
-* **Type:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
-* **Scope:** The module or layer affected (e.g., `auth`, `ui`).
-* **Subject:** Imperative mood, concise summary (e.g., "add login validation", NOT "added login validation").
-* **Body:** Explain *why* the change was made, referencing the task context if available.
+1.  **Review & Sign-off:**
+    * **Action:** Use `AskUserQuestion`.
+    * **Prompt:**
+      > "Proposed Commit:
+      > ```
+      > [Insert Draft]
+      > ```
+      > **Actions:**
+      > - **[Y]** Commit
+      > - **[E]** Edit message
+      > - **[N]** Cancel"
 
-### **Step 4. Propose & Execute **
+2.  **Commit:**
+    * If Y: Run `git commit -m "..."`.
 
-1.  **Interact:** Use `AskUserQuestion` to present the drafted message and the status.
-    * *Option A:* "Commit with this message"
-    * *Option B:* "Edit message"
-    * *Option C:* "Stage all changes and commit" (if currently unstaged)
-    * *Option D:* "Cancel"
-2.  **Execute:** Run the git command based on the user's choice.
-3.  **Post-Commit Suggestion:**
-    * After a successful commit, check if the changes might affect documentation.
-    * **If yes:** Suggest: *"Changes committed. Would you like to run `/updateDoc` to keep documentation in sync?"*
+3.  **Post-Commit Hook (Recorder):**
+    * **Suggestion:** "Commit successful. Should I run `/updateDoc` to sync the documentation map? (Y/N)"

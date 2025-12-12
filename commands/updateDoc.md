@@ -1,38 +1,44 @@
 ---
-description: "Synchronizes /llmdoc with recent code changes and investigation insights, acting as a documentation gardener."
-argument-hint: "[Optional: specific focus area]"
+description: "The Gardening Tool. Manually triggers the Recorder to sync /llmdoc with code reality."
+argument-hint: "[Optional: Context provided by user]"
 model: sonnet
 ---
 
 # /updateDoc
 
-> **SYSTEM OVERRIDE:** You are the **Documentation Manager**. Do not write to documentation files directly. Your job is to ANALYZE the situation and then DISPATCH the `recorder` agent using the `Task` tool.
+> **SYSTEM OVERRIDE:** You are **Documentation Manager**.
+> **Goal:** Keep the map (`/llmdoc`) consistent with the territory (`src/`).
+> **Role:** You do not write. You dispatch the **Historian** (`recorder`).
 
-This command synchronizes the `/llmdoc` "Retrieval Map" with the latest code reality.
+## SOP
 
-## Mandatory Workflow
+### Phase 1: Context Identification
 
-### Step 1: Context Gathering & Impact Analysis (Do this yourself)
+1.  **Identify the "Why" (Strategy Check):**
+    * **Action:** Check `llmdoc/agent/` for the most recent `strategy-*.md`.
+    * **Logic:**
+        * **Found Strategy:** The update should reflect this strategic intent.
+        * **No Strategy:** This is likely a manual cleanup or follow-up to `/do`.
 
-1.  **Read Code:** Run `git diff HEAD` (or staged) to see *what* changed.
-2.  **Read Context:** Scan `.scout-reports/` for recent insights.
-3.  **Synthesize Prompt:** Create a detailed instruction for the Recorder.
-    * *Draft:* "Analyze the changes in [Files]. Update [Concepts] in /llmdoc. Note that [Context from Scout Report]."
+2.  **Identify the "What" (User Input):**
+    * Did the user provide specific instructions? (e.g., `/updateDoc remove auth section`).
 
-### Step 2: Dispatch Recorder (MANDATORY ACTION)
+### Phase 2: Dispatch Historian (The Recorder)
 
-1.  **Invoke Agent:**
-    * You **MUST** use the `Task` tool to launch the `recorder` agent.
-    * **Do not use `Write` or `Edit` yourself.**
-    * **Arguments:**
-        * `agent`: "recorder"
-        * `prompt`: "[Pass the Synthesized Prompt from Step 1 here]"
+1.  **Construct Prompt:**
+    * If **Strategy Found**:
+      > "Sync docs based on `llmdoc/agent/strategy-[topic].md` AND `git diff`. Ensure architectural decisions in the strategy are reflected."
+    * If **No Strategy**:
+      > "Sync docs based on `git diff` and User Input: '{{USER_INPUT}}'. Infer the intent from the code changes."
 
-2.  **Example Tool Call:**
-    * `Task(agent="recorder", prompt="Sync documentation for Auth module. Code added new refresh logic. Update /llmdoc/architecture/auth.md and prune outdated sections.")`
+2.  **Execute:**
+    * **Action:** Call `Task(agent="recorder")`.
+    * **Prompt:**
+      > "[Instruction from above].
+      > **CRITICAL:** Check for obsolete files/sections and **PRUNE** them.
+      > **CRITICAL:** Update `index.md` if structure changed."
 
-### Step 3: Global Indexing
+### Phase 3: Reporting
 
-1.  **Finalize:**
-    * After the recorder finishes, verify if `index.md` needs an update (e.g., if new files were created).
-    * If yes, use `Task` to call `recorder` again for `index.md`.
+1.  **Summarize:**
+    * Report which files were updated or deleted by the Recorder.

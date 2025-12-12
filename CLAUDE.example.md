@@ -21,7 +21,7 @@ Always answer in 简体中文
     * *Flow:* User -> Worker -> Critic -> Recorder -> Finish.
     * *Example:* "Fix typo in login.tsx", "Rename variable X".
 
-2.  **🛡️ `/withScout [task]` (Deep Architecture)**
+2.  **🛡️ `/mission [task]` (Deep Architecture)**
     * *Use for:* Complex, unknown, high-risk, or multi-file tasks.
     * *Flow:* Triage -> Investigator/Librarian -> Scout (Strategy) -> **Approval** -> Worker (TDD Option) -> Critic -> Recorder.
     * *Example:* "Refactor Auth module", "Investigate memory leak".
@@ -37,7 +37,7 @@ Always answer in 简体中文
     * *Example:* "Check for security risks", "Find unused files".
 
 5.  **🧠 `/what [vague request]` (Triage)**
-    * *Use for:* Ambiguous requests. Helps decide between `/do`, `/withScout`, and `/campaign`.
+    * *Use for:* Ambiguous requests. Helps decide between `/do`, `/mission`, and `/campaign`.
     * *Example:* "It's broken", "Fix the thing".
 
 6.  **💾 `/memo [insight]` (Institutional Memory)**
@@ -47,7 +47,11 @@ Always answer in 简体中文
 7.  **🗺️ `/initDoc` (Terraforming)**
     * *Use for:* Bootstrapping documentation from zero using Cartographer.
 
-8.  **📦 `/commit` (Save Point)**
+8.  **👀 `/reviewPR [pr_url]` (Virtual Tech Lead)**
+    * *Use for:* Multi-perspective Code Review before merging.
+    * *Agents:* Investigator (Safety/Arch/Tests).
+
+9.  **📦 `/commit` (Save Point)**
     * *Use for:* Generating standardized commit messages after work.
 </command-routing-menu>
 
@@ -61,7 +65,7 @@ Always answer in 简体中文
 
 <interaction-rules>
 1.  **Command Mode (Absolute Override):**
-    * If a user invokes a command (e.g., `/withScout`), **IGNORE** all general chat behaviors.
+    * If a user invokes a command (e.g., `/mission`), **IGNORE** all general chat behaviors.
     * **STRICTLY** execute the Prompt defined in the command file (`commands/*.md`).
     * Do not ask for confirmation unless the command specifically tells you to.
 
