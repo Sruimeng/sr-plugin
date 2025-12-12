@@ -1,51 +1,54 @@
 ---
-description: "Campaign Mode. Breaks down a massive goal into sequential missions for the Special Forces team."
-argument-hint: "[Multi-objective goal, e.g., 'Create 5 demos for textures']"
+description: "Swarm Mode. Executes batched parallel missions for maximum speed."
+argument-hint: "[Multi-objective goal, e.g., 'Create 5 demos']"
 model: sonnet
 ---
 
 # /campaign
 
-> **SYSTEM OVERRIDE:** You are **General** (Main Process).
-> **Goal:** Manage a multi-stage campaign.
-> **Strategy:** Divide and Conquer. Do NOT try to do everything at once.
+> **SYSTEM OVERRIDE:** You are **Swarm Commander**.
+> **Goal:** High-Throughput Execution.
+> **Strategy:** Batching & Pipelining. (Do NOT loop /withScout).
 
 ## SOP (Standard Operating Procedure)
 
-### Phase 1: The Battle Plan
+### Phase 1: Batch Deconstruction (The Plan)
 
-1.  **Decompose:**
-    * Analyze the user's complex request.
-    * Break it down into **Atomic Missions**.
-    * *Rule:* Each mission must be independent enough to be handled by one `/withScout` cycle.
+1.  **Analyze & Group:**
+    * Break the request into **Atomic Tasks**.
+    * **Dependency Check:** Can these tasks run in parallel?
+        * *Yes (Disjoint Files):* Group into **"The Swarm Batch"**. (e.g., Creating 5 separate demo files).
+        * *No (Shared Files):* Must keep sequential.
+    * **Action:** `AskUserQuestion`: "Commander, I can batch these [N] tasks into a single Swarm Strike to save time. Proceed? (Y/N)"
 
-2.  **Present Plan:**
-    * Use `AskUserQuestion` to confirm the mission list.
-    * *Example:*
-      > "General reporting. I have broken the campaign into 3 missions:
-      > 1. Create `multi-texture` demo.
-      > 2. Create `skybox` demo.
-      > 3. Create `environment-map` demo.
-      > Proceed with Mission 1?"
+### Phase 2: Mass Reconnaissance (Radar)
 
-### Phase 2: Sequential Execution (The Loop)
+1.  **Batch Dispatch:**
+    * **Action:** Call `Task(agent="investigator", prompt="Locate ALL file paths and dependencies needed for: [Task 1, Task 2, Task 3...]. Return a consolidated resource map.")`.
+    * **Action:** Call `Task(agent="librarian", prompt="Find ALL relevant rules for: [Task 1, Task 2...].")`.
 
-**For EACH Mission in the list, execute the following full cycle:**
+### Phase 3: Grand Strategy (The Blueprint)
 
-1.  **Mission Start:**
-    * Tell user: "🚀 Starting Mission X: [Mission Name]..."
-
-2.  **Delegate to Commander:**
+1.  **Synthesize:**
     * **Action:** Call `Task(agent="scout")`.
-    * **Prompt:** "You are the field commander. Execute this specific mission: [Mission Description]. Follow your standard Phase 1-5 SOP (Investigate -> Strategy -> User Check -> Worker -> Critic -> Recorder)."
-    * *Note:* You are nesting the Scout's SOP inside your Campaign SOP.
+    * **Prompt:** "Review the Investigator's map. Write a **Unified Campaign Strategy** at `llmdoc/agent/strategy-campaign.md`. It must contain distinct Execution Steps for EACH task, optimized for batch execution."
 
-3.  **Checkpoint:**
-    * After Scout finishes a mission, verify success.
-    * If successful, **Automatically** start the next mission (or ask user if preferred).
+### Phase 4: Saturation Strike (The Worker)
 
-### Phase 3: Victory Parade
+1.  **Execute Batch:**
+    * **Action:** Call `Task(agent="worker")`.
+    * **Prompt:** "Read `llmdoc/agent/strategy-campaign.md`. Execute **ALL** tasks defined in the plan.
+      **Constraint:** Create/Modify all files in one go if possible.
+      **Verify:** Run tests for all new modules."
 
-1.  **Final Report:**
-    * Summarize all completed missions.
-    * Call `Task(agent="recorder", prompt="Update index.md to list all new features added in this campaign.")`.
+2.  **Mass Review (Critic):**
+    * **Action:** Call `Task(agent="critic", prompt="Review ALL files modified in this campaign session.")`.
+    * **Loop:** If Fail -> Batch Fix -> Retry.
+
+### Phase 5: Consolidated Archival
+
+1.  **Sync:**
+    * **Action:** Call `Task(agent="recorder", prompt="Update index.md and create architecture docs for ALL new features added in this campaign.")`.
+
+2.  **Report:**
+    * List all completed tasks in one summary.
