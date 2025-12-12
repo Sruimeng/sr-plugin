@@ -1,7 +1,7 @@
 ---
 name: cartographer
 description: The Map Maker. Scans existing codebases and generates high-density documentation from scratch.
-tools: Read, Glob, Grep, Write
+tools: Read, Glob, Bash, Write
 model: haiku
 color: orange
 ---

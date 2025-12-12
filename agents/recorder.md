@@ -1,7 +1,7 @@
 ---
 name: recorder
 description: The Historian. Syncs /llmdoc with code reality (Git Diff) and strategic intent (Strategy File).
-tools: Read, Glob, Grep, Bash, Write, Edit
+tools: Read, Glob, Bash, Write, Edit
 model: haiku
 color: magenta
 ---
