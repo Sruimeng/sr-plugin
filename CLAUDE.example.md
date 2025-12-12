@@ -4,61 +4,47 @@ Always answer in 简体中文
 
 <system-reminder>
 
-<always-step-one>
-follow `llmdoc-structure` and read related documents
-
-IMPORTANT: You must read the documentation thoroughly (at least 3 documents) to build a mental map before touching code.
-</always-step-one>
+<global-philosophy>
+- **Documentation-Driven:** Code is downstream of documentation.
+- **Architectural Integrity:** Maintain the structure defined in `/llmdoc`.
+- **Atomic Execution:** Plan -> Execute -> Verify.
+</global-philosophy>
 
 <llmdoc-structure>
-
-- llmdoc/index.md: The main index document. Always read this first.
-- llmdoc/overview/: For high-level project context. Answers "What is this project?".
-- llmdoc/guides/: For step-by-step operational instructions. Answers "How do I do X?".
-- llmdoc/architecture/: For how the system is built (the "LLM Retrieval Map"). **Focus on "Critical Paths" data flow.**
-- llmdoc/reference/: For detailed, factual lookup information (Source of Truth).
-
-ATTENTION: `llmdoc` is always located in the root directory. If missing, consider suggesting `/initDoc` to bootstrap.
-
+- llmdoc/index.md: The main index.
+- llmdoc/architecture/: Critical Paths & Data Flow.
+- llmdoc/reference/: Source of Truth.
+*(Missing docs? Suggest `/initDoc`)*
 </llmdoc-structure>
 
-<adaptive-workflow>
-Implement the "Assess -> Route -> Action" strategy:
+<tool-routing-guide>
+Instead of trying to handle everything yourself, Route tasks to the specialized tools:
 
-1. **Assess Complexity:**
-   - **Low (Fast Track):** Single file, simple logic/typo. -> Use `sr:investigator` to confirm -> `sr:worker` to execute immediately.
-   - **Medium/High (Deep Track):** Cross-file, logic changes, refactoring. -> Use `sr:scout` to generate a **persistent Intelligence Report** -> `sr:worker` to execute based on the Report.
-
-2. **Structured Communication:**
-   - Always look for and parse `<Assessment>` and `<ExecutionPlan>` tags in `sr:investigator` or `sr:scout` outputs.
-   - Pass these structured plans directly to `sr:worker` to ensure atomic execution.
-</adaptive-workflow>
+1.  **Complex/Vague Tasks:** Suggest or use `/withScout`.
+    * *Why:* It handles complexity assessment, split investigation, and documentation sync automatically.
+2.  **Specific Updates:** Suggest or use `/updateDoc` after coding sessions.
+3.  **Documentation Queries:** Use `/what` (if available) or read `/llmdoc`.
+</tool-routing-guide>
 
 <tool-usage-rules>
-- **Investigation:**
-  - **ALWAYS use `sr:investigator` or `sr:scout` instead of generic Explore/Plan Agents.**
-  - Prerequisite: Follow `always-step-one`. Base your investigation on docs first, then code.
-
-- **Execution (`sr:worker` / `bg-worker`):**
-  - Use `sr:worker` (or `bg-worker`) for all side-effects (commands, edits).
-  - **MANDATORY VERIFICATION:** Every execution task MUST end with a verification step (e.g., `npm test`, `npm run lint`, or a syntax check). **Do not mark as done without proof.**
-  - **Self-Correction:** If verification fails, instruct the worker to attempt up to 2 retries before asking for help.
-
-- **Documentation (`sr:recorder` / `sr:updateDoc`):**
-  - **The last TODO is ALWAYS to update documentation.**
-  - **Staleness Check:** When updating docs, explicitly check for and **DELETE** obsolete documents or sections. Do not just add new content.
-  - Use `sr:updateDoc` to handle the synchronization automatically when possible.
-
+- **Investigation:** Prefer `/withScout` for deep dives.
+- **Execution (`sr:worker`):**
+    - MANDATORY: Always run a verification step (test/lint) after edits.
+    - Self-Correction: Retry up to 2 times before stopping.
+- **Documentation:**
+    - Staleness Check: Delete obsolete docs when updating.
 - **Completion:**
-  - **ALWAYS use `sr:commit`** to generate standardized, context-aware commit messages before finishing.
+    - Use `sr:commit` for commit messages.
 </tool-usage-rules>
 
-<optional-coding>
-Option-based programming never jumps to conclusions. Instead, after thorough research and complexity assessment, uses the `AskUserQuestion` tool to present users with choices (e.g., "Fast Track vs Deep Track"), allowing them to continue their work based on the selected options.
-</optional-coding>
+<interaction-mode>
+**Standard Mode:**
+For general chat, first read relevant docs (at least 1-3) to build context.
 
-- **ALWAYS prioritize Document-Driven Development.**
-- **ALWAYS maintain the loop: Investigate (Plan) -> Execute (Verify) -> Document (Prune).**
-- **Always follow `optional-coding` and `adaptive-workflow`.**
+**Command Mode (Override):**
+If the user invokes a specific command (e.g., `/withScout`, `/updateDoc`), **STRICTLY FOLLOW the workflow defined in that command's prompt**.
+- Do NOT stop to ask for confirmation unless the command explicitly requires it.
+- Do NOT apply generic workflows that contradict the command's specific logic.
+</interaction-mode>
 
 </system-reminder>
