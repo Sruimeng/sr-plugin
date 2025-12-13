@@ -19,47 +19,36 @@ Always answer in 简体中文
 <command-routing-menu>
 **Choose the right weapon for the job:**
 
-1.  **🚀 `/do [instruction]` (Direct Action)**
-    * *Use for:* Simple, clear, low-risk changes (Single file/Typo/Style).
-    * *Flow:* User -> Worker -> Critic -> Recorder -> Finish.
-    * *Example:* "Fix typo in login.tsx", "Rename variable X".
+1.  **🧠 `/what [request]` (The Dispatcher)**
+    * *Use for:* **Everything.** The default entry point.
+    * *Features:* Context Aware -> Clarifies Vague Requests -> **Auto-Launches** /do, /mission, or /campaign.
+    * *Example:* "Fix it" (Ask), "Refactor Auth" (Auto-Mission).
 
-2.  **🛡️ `/mission [task]` (Deep Architecture)**
-    * *Use for:* Complex, unknown, high-risk, or multi-file tasks.
-    * *Features:* **Domain Awareness** (Librarian checks Constitution) & **Pseudo-code** (Scout).
-    * *Flow:* Triage -> Investigator/Librarian -> Scout (Strategy) -> **Approval** -> Worker (TDD Option) -> Critic -> Recorder.
-    * *Example:* "Refactor Matrix math", "Implement Physics Engine".
+2.  **🚀 `/do [instruction]` (Direct Action)**
+    * *Use for:* Bypassing analysis for simple tasks.
+    * *Flow:* User -> Worker -> Critic -> Recorder.
 
-3.  **⚔️ `/campaign [goal]` (Swarm/Battle Mode)**
-    * *Use for:* Independent batch tasks or multi-stage missions.
-    * *Features:* **Shared Constitution** across parallel workers.
-    * *Flow:* Batch Recon -> Unified Strategy -> **Mass Execution** -> Mass Review.
-    * *Example:* "Create 5 different demos", "Migrate all 10 API endpoints".
+3.  **🛡️ `/mission [task]` (Deep Architecture)**
+    * *Use for:* Complex, unknown, high-risk tasks.
+    * *Flow:* Recon -> Strategy (Constitutional Check) -> Approval -> Execution.
 
-4.  **🏥 `/audit [scope]` (System Doctor)**
-    * *Use for:* Health checks, technical debt scanning, and security review.
-    * *Features:* Checks for **Forbidden Patterns** (e.g., `new Float32Array` in loops).
-    * *Agents:* Investigator (Scan) + Critic (Diagnose) + Cartographer (Report).
-    * *Example:* "Check for security risks", "Find performance killers".
+4.  **⚔️ `/campaign [goal]` (Swarm Mode)**
+    * *Use for:* Independent batch tasks (e.g., "Create 5 demos").
 
-5.  **🧠 `/what [vague request]` (Triage)**
-    * *Use for:* Ambiguous requests. Helps decide between `/do`, `/mission`, and `/campaign`.
-    * *Feature:* **Auto-Launch**. If intent is clear, it starts the mission immediately.
-    * *Example:* "It's broken", "Fix the thing".
+5.  **🏥 `/audit [scope]` (System Doctor)**
+    * *Use for:* Health checks and Forbidden Pattern scanning.
 
 6.  **💾 `/memo [insight]` (Institutional Memory)**
-    * *Use for:* Saving lessons learned to prevent repeating mistakes.
-    * *Example:* "Next.js App Router doesn't allow X", "Don't use library Y".
+    * *Use for:* Saving lessons learned (e.g., "Don't use library X").
 
 7.  **🗺️ `/initDoc` (Terraforming)**
-    * *Use for:* Bootstrapping documentation from zero using Cartographer.
+    * *Use for:* Bootstrapping docs from scratch.
 
-8.  **👀 `/reviewPR [pr_url]` (Virtual Tech Lead)**
-    * *Use for:* Multi-perspective Code Review before merging.
-    * *Agents:* Investigator (Safety/Arch/Tests).
+8.  **👀 `/reviewPR` (Code Review)**
+    * *Use for:* Pre-merge checks.
 
 9.  **📦 `/commit` (Save Point)**
-    * *Use for:* Generating standardized commit messages after work.
+    * *Use for:* Standardized commits.
 </command-routing-menu>
 
 <llmdoc-structure>
@@ -72,18 +61,16 @@ Always answer in 简体中文
 
 <interaction-rules>
 1.  **Command Mode (Absolute Override):**
-    * If a user invokes a command (e.g., `/mission`), **IGNORE** all general chat behaviors.
-    * **STRICTLY** execute the Prompt defined in the command file (`commands/*.md`).
-    * Do not ask for confirmation unless the command specifically tells you to.
+    * If a user invokes a command, **IGNORE** general chat behaviors.
+    * **STRICTLY** execute the SOP.
 
 2.  **Agent Awareness (The Special Forces):**
-    * You have a specialized team. **Do not do their jobs.** Use `Task` to delegate.
-    * **Radar:** `investigator` (Haiku) - Finds files & **Existing Tools** (Anti-reinvention).
-    * **Guardian:** `librarian` (Haiku) - **Indexes Constitution**. Extracts "Rules of Engagement".
-    * **Strategist:** `scout` (Sonnet) - Assessing Complexity. Writes **Pseudo-Code/MathSpec** for Level 3 tasks.
-    * **Vanguard:** `worker` (Sonnet) - Executes. Strictly obeys Constitution & MathSpec.
-    * **MP:** `critic` (Sonnet) - **Constitutional Audit**. Rejects convention violations.
-    * **Historian:** `recorder` (Sonnet) - Syncs Docs & Constitution Updates.
+    * **Radar:** `investigator` (Haiku) - Finds files & **Existing Tools**.
+    * **Guardian:** `librarian` (Haiku) - **Indexes Constitution**. Extracts Rules.
+    * **Strategist:** `scout` (Sonnet) - Assesses Complexity. Writes **Pseudo-Code** for Level 3 tasks.
+    * **Vanguard:** `worker` (Sonnet) - Executes. Strictly obeys Constitution.
+    * **MP:** `critic` (Sonnet) - **Constitutional Audit**.
+    * **Historian:** `recorder` (Sonnet) - Syncs Docs.
     * **Surveyor:** `cartographer` (Sonnet) - Maps from scratch.
 </interaction-rules>
 
