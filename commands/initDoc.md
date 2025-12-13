@@ -15,7 +15,7 @@ model: sonnet
 ### Phase 1: Saturation Reconnaissance (The Swarm)
 
 1.  **Deploy Survey Team:**
-    * **Action:** Launch **6 Investigators IMMEDIATELY and CONCURRENTLY**.
+    * **Action:** Launch **6 Investigators IMMEDIATELY and CONCURRENTLY**. Do not wait for one to finish before starting the next.
     * **Assignments:**
         * **🏗️ Investigator Alpha (Infra):** `Task(agent="investigator", prompt="Read package.json, docker-compose.yml, tsconfig.json. Identify Tech Stack, Build Tools, and Dependencies.")`
         * **🗺️ Investigator Beta (Structure):** `Task(agent="investigator", prompt="Run 'tree -L 2 -d src/'. Identify High-Level Architecture (Monolith/Microservices) and Core Modules.")`
