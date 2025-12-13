@@ -50,18 +50,26 @@ model: sonnet
 ### Phase 3: The Gatekeeper (Approval)
 
 1.  **Seek Approval:**
-    * **Action:** Read the `strategy-[topic].md`.
-    * **Present Options:**
-        > "Commander. Strategy ready.
-        > **Complexity:** [Level]
-        > **Key Rules:** [Briefly list active constitution rules]
+    * **Action:** Read the `strategy-[topic].md` file.
+    * **Present Options:** Use `AskUserQuestion` to present the plan:
+        > "Commander reporting. Strategy ready at [Path].
+        > **Summary:** [Brief recap of Strategy]
         >
-        > **Execute? [Y] Standard / [T] TDD / [N] Abort.**"
+        > **SELECT EXECUTION MODE:**
+        > 1. **Standard** (Default) - Fast execution (Impl -> Verify).
+        > 2. **TDD** - Robust execution (Test -> Impl -> Verify).
+        > 3. **Abort** - Stop mission.
+        >
+        > *Press Enter to accept Standard, or type 'TDD'.*"
 
 ### Phase 4: Execution & Quality Assurance
 
 1.  **Dispatch Vanguard:**
-    * **Action:** `Task(agent="worker", prompt="Execute plan in `strategy-[topic].md`. **STRICT ADHERENCE** to the <Constitution> and <MathSpec> sections is mandatory. Do not guess API behavior.")`
+    * **Analyze User Response:**
+        * If input contains "TDD" or "2" -> Set `FLAG` = "**[ENABLE_TDD_PROTOCOL]**"
+        * If input contains "Abort" or "3" -> **STOP**.
+        * **Default (Empty/Enter/"Standard"/"1"):** -> Set `FLAG` = ""
+    * **Action:** `Task(agent="worker", prompt="Execute plan in strategy file: [Path]. **STRICT ADHERENCE** to the <Constitution> and <MathSpec> sections is mandatory. " + FLAG)`
 
 2.  **Dispatch MP (The Audit):**
     * **Action:** Call `Task(agent="critic")`.
