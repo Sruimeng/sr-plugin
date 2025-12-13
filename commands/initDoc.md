@@ -1,36 +1,51 @@
 ---
-description: "Bootstraps the /llmdoc system from scratch by mapping the existing codebase."
+description: "Bootstraps the /llmdoc system using a SWARM of investigators to map the codebase and establish the Constitution."
 argument-hint: ""
+model: sonnet
 ---
 
 # /initDoc
 
-> **SYSTEM OVERRIDE:** You are **Commander**. This is a "Terraforming" mission.
-> **Goal:** Create a map where there is none.
+> **SYSTEM OVERRIDE:** You are the **Expedition Commander**.
+> **Goal:** Rapid Terraforming & Constitutional Convention.
+> **Strategy:** Saturation Reconnaissance -> Parallel Cartography.
 
 ## Standard Operating Procedure
 
-### Phase 1: Reconnaissance (The Scout)
+### Phase 1: Saturation Reconnaissance (The Swarm)
 
-1.  **Survey the Land:**
-    * **Action:** Call `Task(agent="investigator", prompt="List top-level directories and key config files (package.json, etc). Return a tree structure.")`.
-    * **Synthesize:** Analyze the tree. Identify the "Core Modules" (e.g., `src/auth`, `src/api`).
-    * *Self-Correction:* If the structure is standard (e.g., Next.js, NestJS), proceed immediately. Only ask user if the structure is chaotic.
+1.  **Deploy Survey Team:**
+    * **Action:** Launch **6 Investigators IMMEDIATELY and CONCURRENTLY**.
+    * **Assignments:**
+        * **🏗️ Investigator Alpha (Infra):** `Task(agent="investigator", prompt="Read package.json, docker-compose.yml, tsconfig.json. Identify Tech Stack, Build Tools, and Dependencies.")`
+        * **🗺️ Investigator Beta (Structure):** `Task(agent="investigator", prompt="Run 'tree -L 2 -d src/'. Identify High-Level Architecture (Monolith/Microservices) and Core Modules.")`
+        * **💾 Investigator Gamma (Data):** `Task(agent="investigator", prompt="Search for database schemas (prisma, sql, mongoose) or core Interface definitions. Map the Data Model.")`
+        * **🔌 Investigator Delta (API):** `Task(agent="investigator", prompt="Search for Controller files, API routes, or GraphQL resolvers. Identify Entry Points.")`
+        * **🛠️ Investigator Epsilon (Utils):** `Task(agent="investigator", prompt="Scan 'src/utils', 'src/common', 'src/shared'. List reusable helper functions to prevent reinvention.")`
+        * **⚖️ Investigator Omega (The Lawyer):** `Task(agent="investigator", prompt="**CRITICAL MISSION:** Find the 'Implicit Constitution'. 1. Check Math libs for Coordinate System/Matrix Order. 2. Check Tests for Epsilon/Precision rules. 3. Check Linter configs for coding style. 4. Look for 'Forbidden Patterns'.")`
 
-### Phase 2: Foundation (The Cartographer)
+2.  **Await Intel:**
+    * Wait for ALL 6 reports to return.
 
-1.  **Map the Tech Stack:**
-    * **Action:** Call `Task(agent="cartographer", prompt="Read package.json and config files. Research key dependencies. Create /llmdoc/reference/tech-stack.md explaining WHY we use these libs.")`.
-    * *Critical:* Wait for this file. It informs the language used in subsequent docs.
+### Phase 2: Mass Cartography (Parallel Mapping)
 
-2.  **Map Core Modules (The Loop):**
-    * **Loop:** For every identified Core Module:
-        * **Action:** Call `Task(agent="cartographer", prompt="Scan [Module Path]. Create /llmdoc/architecture/[module-name].md. Focus on: Responsibility and Critical Paths.")`.
+1.  **Synthesize & Dispatch:**
+    * Based on the reports, dispatch **Cartographers** to write the docs in parallel.
+    * **Action:** Call `Task` for each document type:
+
+    * **Layer 1: The Constitution (Highest Priority)**
+        * **Cartographer Prime:** `Task(agent="cartographer", prompt="Context: [Omega Report]. Create /llmdoc/reference/constitution.md. **Define the Rules of Engagement:** Coordinate Systems, Matrix Conventions, Error Handling Standards, and Forbidden Patterns. This is the source of truth for all Agents.")`
+
+    * **Layer 2: The Territory**
+        * **Cartographer A:** `Task(agent="cartographer", prompt="Context: [Infra Report]. Create /llmdoc/reference/tech-stack.md.")`
+        * **Cartographer B:** `Task(agent="cartographer", prompt="Context: [Data Report]. Create /llmdoc/reference/data-models.md.")`
+        * **Cartographer C:** `Task(agent="cartographer", prompt="Context: [Structure Report] & [API Report]. Create /llmdoc/architecture/system-overview.md.")`
+        * **Cartographer D:** `Task(agent="cartographer", prompt="Context: [Epsilon Report]. Create /llmdoc/reference/shared-utilities.md (The 'Don't Reinvent' List).")`
 
 ### Phase 3: Final Linkage (The Index)
 
 1.  **Generate Index:**
-    * **Action:** Call `Task(agent="cartographer", prompt="List all files in /llmdoc. Create a structured /llmdoc/index.md linking to them.")`.
+    * **Action:** Call `Task(agent="cartographer", prompt="List all files in /llmdoc. Create a structured /llmdoc/index.md linking to them. **Highlight 'constitution.md' as the first read.**")`.
 
 2.  **Report:**
-    * Output: "System Initialization Complete. Map created at /llmdoc/index.md."
+    * Output: "🚀 **Terraforming Complete.** Map and Constitution established."
