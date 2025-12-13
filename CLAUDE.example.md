@@ -7,8 +7,11 @@ Always answer in 简体中文
 <global-philosophy>
 - **Protocol First:** Strictly follow the Standard Operating Procedures (SOP) defined in commands.
 - **Doc-Driven:** Code is downstream of documentation (`/llmdoc`).
+- **Constitutional Fidelity:**
+    - All code MUST adhere to the "Rules of Engagement" (e.g., Matrix Order, Coordinate Systems) defined in `llmdoc/reference/`.
+    - **No Guessing:** If a domain rule exists, strict obedience is required.
 - **Separation of Concerns:**
-    - **Strategy:** Defined in `llmdoc/agent/strategy-*.md` (The Intent).
+    - **Strategy:** Defined in `llmdoc/agent/strategy-*.md` (The Intent & Pseudo-code).
     - **Reality:** Defined in `src/` code (The Implementation).
     - **Map:** Defined in `llmdoc/` documentation (The Reflection).
 </global-philosophy>
@@ -23,18 +26,21 @@ Always answer in 简体中文
 
 2.  **🛡️ `/mission [task]` (Deep Architecture)**
     * *Use for:* Complex, unknown, high-risk, or multi-file tasks.
+    * *Features:* **Domain Awareness** (Librarian checks Constitution) & **Pseudo-code** (Scout).
     * *Flow:* Triage -> Investigator/Librarian -> Scout (Strategy) -> **Approval** -> Worker (TDD Option) -> Critic -> Recorder.
-    * *Example:* "Refactor Auth module", "Investigate memory leak".
+    * *Example:* "Refactor Matrix math", "Implement Physics Engine".
 
 3.  **⚔️ `/campaign [goal]` (Swarm/Battle Mode)**
     * *Use for:* Independent batch tasks or multi-stage missions.
+    * *Features:* **Shared Constitution** across parallel workers.
     * *Flow:* Batch Recon -> Unified Strategy -> **Mass Execution** -> Mass Review.
     * *Example:* "Create 5 different demos", "Migrate all 10 API endpoints".
 
 4.  **🏥 `/audit [scope]` (System Doctor)**
     * *Use for:* Health checks, technical debt scanning, and security review.
+    * *Features:* Checks for **Forbidden Patterns** (e.g., `new Float32Array` in loops).
     * *Agents:* Investigator (Scan) + Critic (Diagnose) + Cartographer (Report).
-    * *Example:* "Check for security risks", "Find unused files".
+    * *Example:* "Check for security risks", "Find performance killers".
 
 5.  **🧠 `/what [vague request]` (Triage)**
     * *Use for:* Ambiguous requests. Helps decide between `/do`, `/mission`, and `/campaign`.
@@ -59,7 +65,7 @@ Always answer in 简体中文
 - `llmdoc/index.md`: The entry point.
 - `llmdoc/architecture/`: Critical Paths & Data Flow maps.
 - `llmdoc/guides/`: Step-by-step procedures.
-- `llmdoc/reference/`: Source of Truth (Configs) & Tech Stack.
+- `llmdoc/reference/`: **The Constitution** (Bibles, Standards, Tech Stack).
 - `llmdoc/agent/`: **Strategic Memory** (Stores `strategy-xxx.md` files).
 </llmdoc-structure>
 
@@ -71,12 +77,12 @@ Always answer in 简体中文
 
 2.  **Agent Awareness (The Special Forces):**
     * You have a specialized team. **Do not do their jobs.** Use `Task` to delegate.
-    * **Radar:** `investigator` (Haiku) - Finds files & paths. (No reading).
-    * **Archivist:** `librarian` (Haiku) - Checks docs & web. (No code).
-    * **Analyst:** `scout` (Sonnet) - Reads code & writes Strategy.
-    * **Vanguard:** `worker` (Sonnet) - Executes, Tests & Fixes.
-    * **MP:** `critic` (Sonnet) - Reviews, Rejects & Guards.
-    * **Historian:** `recorder` (Sonnet) - Syncs Docs (Prunes old ones).
+    * **Radar:** `investigator` (Haiku) - Finds files & **Existing Tools** (Anti-reinvention).
+    * **Guardian:** `librarian` (Haiku) - **Indexes Constitution**. Extracts "Rules of Engagement".
+    * **Strategist:** `scout` (Sonnet) - Assessing Complexity. Writes **Pseudo-Code/MathSpec** for Level 3 tasks.
+    * **Vanguard:** `worker` (Sonnet) - Executes. Strictly obeys Constitution & MathSpec.
+    * **MP:** `critic` (Sonnet) - **Constitutional Audit**. Rejects convention violations.
+    * **Historian:** `recorder` (Sonnet) - Syncs Docs & Constitution Updates.
     * **Surveyor:** `cartographer` (Sonnet) - Maps from scratch.
 </interaction-rules>
 

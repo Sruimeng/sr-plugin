@@ -1,6 +1,7 @@
 ---
 description: "Swarm Mode. Executes batched parallel missions for maximum speed."
 argument-hint: "[Multi-objective goal, e.g., 'Create 5 demos']"
+model: sonnet
 ---
 
 # /campaign
@@ -25,30 +26,23 @@ argument-hint: "[Multi-objective goal, e.g., 'Create 5 demos']"
         * `Task(agent="investigator", prompt="[Task 1] Locate files...")`
         * `Task(agent="investigator", prompt="[Task 2] Locate files...")`
         * ...
-    * **Wait:** Collect ALL reports.
+        * **GLOBAL RULE CHECK:** `Task(agent="librarian", prompt="Scan `llmdoc/reference/` for architectural rules that apply to ALL tasks in this batch (e.g. naming conventions, base classes).")`
 
 ### Phase 3: Grand Strategy (The Modular Blueprint)
 
 1.  **Synthesize:**
     * **Action:** Call `Task(agent="scout")`.
     * **Prompt:**
-      > "Review the Recon Map. Write a **Modular Campaign Strategy** at `llmdoc/agent/strategy-campaign.md`.
+      > "Review the Recon Map and Librarian's Rules. Write a **Modular Campaign Strategy** at `llmdoc/agent/strategy-campaign.md`.
       >
       > **CRITICAL FORMAT:**
       > Divide the plan into **Independent Execution Blocks**.
-      > For each block, explicitly list the **Target Files**.
-      > Example:
-      > - **Block A:** Create `components/Header.tsx`.
-      > - **Block B:** Create `components/Footer.tsx`.
-      > (Ensure Block A and B do not touch the same files)."
+      > Include a shared **<Constitution>** section at the top for all Workers to follow."
 
 ### Phase 4: Gatekeeper (Mode Selection)
 
 1.  **Seek Approval:**
     * **Action:** Read `strategy-campaign.md`.
-    * **Assess Parallelism:**
-        * Do the blocks touch different files? -> **Recommend Parallel.**
-        * Do they touch the same file? -> **Force Sequential.**
     * **Present:**
         > "Strategy ready.
         > **Choose Mode:**
@@ -62,15 +56,14 @@ argument-hint: "[Multi-objective goal, e.g., 'Create 5 demos']"
 1.  **Execute (Dynamic Dispatch):**
     * **IF [P] Parallel Mode:**
         * **Action:** Launch multiple Worker agents **AT THE SAME TIME**.
-        * `Task(agent="worker", prompt="Execute BLOCK A from strategy-campaign.md")`
-        * `Task(agent="worker", prompt="Execute BLOCK B from strategy-campaign.md")`
+        * `Task(agent="worker", prompt="Execute BLOCK A. Adhere to <Constitution>.")`
+        * `Task(agent="worker", prompt="Execute BLOCK B. Adhere to <Constitution>.")`
         * ...
     * **IF [S] or [T] Mode:**
-        * **Action:** Launch Worker sequentially for each block.
+        * **Action:** Launch Worker sequentially.
 
 2.  **Mass Review (Critic):**
-    * **Wait:** Wait for ALL Workers to return.
-    * **Action:** Call `Task(agent="critic", prompt="Review ALL files modified in this session. Check for integration issues between blocks.")`.
+    * **Action:** Call `Task(agent="critic", prompt="Review ALL files. Ensure consistency across the batch and adherence to Librarian's rules.")`.
     * **Loop:** If Fail -> Batch Fix -> Retry.
 
 ### Phase 6: Consolidated Archival
