@@ -26,16 +26,18 @@ argument-hint: "[Optional: Context provided by user]"
 
 1.  **Construct Prompt:**
     * If **Strategy Found**:
-      > "Sync docs based on `llmdoc/agent/strategy-[topic].md` AND `git diff`. Ensure architectural decisions in the strategy are reflected."
+      > "Sync docs based on `llmdoc/agent/strategy-[topic].md` AND `git diff`. Ensure architectural decisions are reflected."
     * If **No Strategy**:
-      > "Sync docs based on `git diff` and User Input: '{{USER_INPUT}}'. Infer the intent from the code changes."
+      > "Sync docs based on `git diff` and User Input: '{{USER_INPUT}}'."
 
 2.  **Execute:**
     * **Action:** Call `Task(agent="recorder")`.
     * **Prompt:**
       > "[Instruction from above].
-      > **CRITICAL:** Check for obsolete files/sections and **PRUNE** them.
-      > **CRITICAL:** Update `index.md` if structure changed."
+      > **CRITICAL:** Read `llmdoc/guides/doc-standard.md` first.
+      > 1. Ensure all updated files have YAML Frontmatter.
+      > 2. Convert prose to Pseudocode/Types where possible.
+      > 3. **PRUNE** obsolete files."
 
 ### Phase 3: Reporting
 

@@ -81,7 +81,11 @@ model: sonnet
 ### Phase 5: Closure
 
 1.  **Dispatch Historian:**
-    * **Action:** `Task(agent="recorder", prompt="Sync /llmdoc based on Strategy and Git Diff.")`
+    * **Action:** `Task(agent="recorder")`
+    * **Prompt:**
+      > "Sync /llmdoc based on Strategy and Git Diff.
+      > **Constraint:** Ensure any new documents follow the schema in `llmdoc/guides/doc-standard.md` (Frontmatter, Interfaces, Constraints).
+      > Update `index.md` if necessary."
 
 2.  **Final Report:**
     * Output: "Mission Accomplished. Docs updated."

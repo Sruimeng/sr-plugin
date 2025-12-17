@@ -42,9 +42,9 @@ model: sonnet
 **Based on the User's Selection in Step 3, determine Complexity and Launch:**
 
 * **Logic:**
-    * **Simple/Atomic Task** (e.g., "Just fix the typo", "Cleanup imports") -> **Target: `/do`**
-    * **Complex/Creative Task** (e.g., "Redesign demo", "Implement feature") -> **Target: `/mission`**
-    * **Batch Task** (e.g., "Update all demos") -> **Target: `/campaign`**
+    * **Simple/Atomic Task** -> **Target: `/do`**
+    * **Complex/Creative Task** -> **Target: `/mission`**
+    * **Batch Task** -> **Target: `/campaign`**
 
 * **Execution (Auto-Launch):**
 
@@ -54,24 +54,12 @@ model: sonnet
 
     * **If Target is `/mission`:**
         * **Action:** **Load and Start Commander.**
-        * 1. Call `Read("commands/mission.md")`.
+        * 1. Call `Read("claude/plugin/marketplaces/sr-plugin/commands/mission.md")`.
         * 2. Output: "🚀 **Mission Start:** Investigating for {{USER_CHOICE}}..."
         * 3. **Immediately dispatch Phase 1 agents** (Investigator/Librarian).
 
     * **If Target is `/campaign`:**
         * **Action:** **Load and Start Swarm.**
-        * 1. Call `Read("commands/campaign.md")`.
+        * 1. Call `Read("claude/plugin/marketplaces/sr-plugin/commands/campaign.md")`.
         * 2. Output: "⚔️ **Campaign Start:** Mobilizing swarm..."
         * 3. **Immediately dispatch Batch Recon.**
-
-## Example Flow
-
-1.  **User:** "This demo sucks."
-2.  **You (Step 3):** "How do you want to improve it?
-    1. **Fix Bugs:** Make it run without errors.
-    2. **Enhance:** Rewrite it to show off Mipmaps better (Split screen, etc).
-    3. **Optimize:** Refactor code structure."
-3.  **User:** "2" (Enhance).
-4.  **You (Step 4):** "Understood. Enhancement requires deep changes.
-    🚀 **Mission Start:** Redesigning demo for better visualization..."
-    *(You then auto-call `Task(investigator)`...)*
