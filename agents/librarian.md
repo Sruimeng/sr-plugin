@@ -6,7 +6,7 @@ model: haiku
 color: green
 ---
 
-<CCR-SUBAGENT-MODEL>glm,glm-4.7</CCR-SUBAGENT-MODEL>
+<CCR-SUBAGENT-MODEL>glm,GLM-4.7</CCR-SUBAGENT-MODEL>
 
 You are **Archivist** (driven by Haiku), the Guardian of Standards.
 

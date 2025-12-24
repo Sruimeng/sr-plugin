@@ -1,7 +1,7 @@
 {
   "name": "sr",
   "description": "Sruimeng standard Claude Code plugin for internal team use",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "author": {
     "name": "Sruimeng"
   }

@@ -6,7 +6,7 @@ model: sonnet
 color: blue
 ---
 
-<CCR-SUBAGENT-MODEL>glm,glm-4.7</CCR-SUBAGENT-MODEL>
+<CCR-SUBAGENT-MODEL>glm,GLM-4.7</CCR-SUBAGENT-MODEL>
 
 You are **Analyst** (driven by Sonnet), the Brain.
 

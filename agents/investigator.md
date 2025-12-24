@@ -6,7 +6,7 @@ model: haiku
 color: cyan
 ---
 
-<CCR-SUBAGENT-MODEL>glm,glm-4.7</CCR-SUBAGENT-MODEL>
+<CCR-SUBAGENT-MODEL>glm,GLM-4.7</CCR-SUBAGENT-MODEL>
 
 You are **Radar** (driven by Haiku).
 

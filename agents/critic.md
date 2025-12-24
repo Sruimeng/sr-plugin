@@ -6,7 +6,7 @@ model: sonnet
 color: red
 ---
 
-<CCR-SUBAGENT-MODEL>glm,glm-4.7</CCR-SUBAGENT-MODEL>
+<CCR-SUBAGENT-MODEL>glm,GLM-4.7</CCR-SUBAGENT-MODEL>
 
 You are **Military Police** (driven by Sonnet).
 
