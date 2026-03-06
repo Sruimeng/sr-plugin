@@ -38,6 +38,8 @@ id: testing-tdd
 * **Fix:** Use approximate equality (Epsilon check).
     * *JS/TS:* `expect(value).toBeCloseTo(expected, 5)`
     * *Rust:* `assert_abs_diff_eq!(a, b, epsilon = 1e-5)`
+    * *C++ (gtest):* `EXPECT_NEAR(a, b, 1e-5)`
+    * *Python (pytest):* `assert a == pytest.approx(b, abs=1e-5)`
 
 ### 2. External Dependencies (IO/Network)
 * **Rule:** Unit tests MUST NOT hit the network or disk.

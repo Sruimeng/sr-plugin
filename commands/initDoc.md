@@ -37,7 +37,7 @@ model: sonnet
 1.  **Deploy Survey Team:**
     * **Action:** Launch **6 Investigators IMMEDIATELY and CONCURRENTLY**.
     * **Assignments:**
-        * **🏗️ Investigator Alpha (Infra):** `Task(agent="investigator", prompt="Read package.json, docker-compose.yml, tsconfig.json. Identify Tech Stack, Build Tools, and Dependencies.")`
+        * **🏗️ Investigator Alpha (Infra):** `Task(agent="investigator", prompt="Read build/dependency manifests: package.json/tsconfig.json, Cargo.toml, go.mod, pyproject.toml/requirements.txt, CMakeLists.txt/compile_commands.json, vcpkg.json/conanfile.*, build.gradle/pom.xml/*.csproj, docker-compose.yml. Identify Tech Stack, Build Tools, and Dependencies.")`
         * **🗺️ Investigator Beta (Structure):** `Task(agent="investigator", prompt="Run 'tree -L 2 -d src/'. Identify High-Level Architecture (Monolith/Microservices) and Core Modules.")`
         * **💾 Investigator Gamma (Data):** `Task(agent="investigator", prompt="Search for database schemas (prisma, sql, mongoose) or core Interface definitions. Map the Data Model.")`
         * **🔌 Investigator Delta (API):** `Task(agent="investigator", prompt="Search for Controller files, API routes, or GraphQL resolvers. Identify Entry Points.")`
